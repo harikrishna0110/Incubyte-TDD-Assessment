@@ -14,6 +14,17 @@ public class Library {
     public boolean isBookAvailable(String isbn) {
         return books.containsKey(isbn) && books.get(isbn).isAvailable();
     }
+
+    public void borrowBook(String isbn) {
+        if (!books.containsKey(isbn)) {
+            throw new IllegalArgumentException("Book not found.");
+        }
+        Book book = books.get(isbn);
+        if (!book.isAvailable()) {
+            throw new IllegalStateException("Book is already borrowed.");
+        }
+        book.setAvailable(false);
+    }
 }
 
 class Book {
@@ -33,5 +44,8 @@ class Book {
 
     public boolean isAvailable() {
         return available;
+    }
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }
