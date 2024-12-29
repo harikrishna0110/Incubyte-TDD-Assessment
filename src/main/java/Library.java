@@ -25,6 +25,17 @@ public class Library {
         }
         book.setAvailable(false);
     }
+    public void returnBook(String isbn) {
+        if (!books.containsKey(isbn)) {
+            throw new IllegalArgumentException("Book not found.");
+        }
+        Book book = books.get(isbn);
+        if (book.isAvailable()) {
+            throw new IllegalStateException("Book is already returned.");
+        }
+        book.setAvailable(true);
+    }
+
 }
 
 class Book {
