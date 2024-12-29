@@ -1,5 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Library {
     private Map<String, Book> books = new HashMap<>();
@@ -35,6 +37,16 @@ public class Library {
         }
         book.setAvailable(true);
     }
+
+
+
+    public List<Book> viewAvailableBooks() {
+        return books.values().stream()
+                .filter(Book::isAvailable)
+                .collect(Collectors.toList());
+    }
+
+
 
 }
 
