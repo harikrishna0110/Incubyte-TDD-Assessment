@@ -32,5 +32,31 @@ public class LibraryTest {
 
         assertEquals(1, library.viewAvailableBooks().size());
     }
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddDuplicateBook() {
+        Library library = new Library();
+        library.addBook("123", "The Great Gatsby", "F. Scott Fitzgerald", 1925);
+
+        library.addBook("123", "The Great Gatsby", "F. Scott Fitzgerald", 1925);
+    }
+
+    @Test
+    public void testAddBookWithDuplicateISBN() {
+        Library library = new Library();
+        // Add the first book with ISBN "123"
+        library.addBook("123", "The Great Gatsby", "F. Scott Fitzgerald", 1925);
+
+        try {
+            // Attempt to add a second book with the same ISBN, which should throw an IllegalArgumentException
+            library.addBook("123", "The Great Gatsby", "F. Scott Fitzgerald", 1925);
+
+            // If no exception is thrown, we manually fail the test
+            fail("Expected IllegalArgumentException not thrown.");
+        } catch (IllegalArgumentException e) {
+            // This block will run if the exception is thrown (test passes)
+            System.out.println("Exception caught: " + e.getMessage());
+        }
+    }
+
 
 }

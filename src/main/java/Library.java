@@ -7,6 +7,7 @@ public class Library {
     private Map<String, Book> books = new HashMap<>();
 
     public void addBook(String isbn, String title, String author, int year) {
+        System.out.println("Checking ISBN: " + isbn); // Debugging line
         if (books.containsKey(isbn)) {
             throw new IllegalArgumentException("Book with this ISBN already exists.");
         }
