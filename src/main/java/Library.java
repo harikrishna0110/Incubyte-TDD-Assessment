@@ -7,18 +7,38 @@ public class Library {
     private Map<String, Book> books = new HashMap<>();
 
     public void addBook(String isbn, String title, String author, int year) {
-        System.out.println("Checking ISBN: " + isbn); // Debugging line
+        if (isbn == null || isbn.isEmpty()) {
+            throw new IllegalArgumentException("Invalid ISBN.");
+        }
         if (books.containsKey(isbn)) {
             throw new IllegalArgumentException("Book with this ISBN already exists.");
+        }
+        if (isbn == null || isbn.isEmpty()) {
+            throw new IllegalArgumentException("ISBN cannot be null or empty.");
+        }
+        if (books.containsKey(isbn)) {
+            throw new IllegalArgumentException("Book with this ISBN already exists.");
+        }
+        if (title == null || title.isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty.");
+        }
+        if (author == null || author.isEmpty()) {
+            throw new IllegalArgumentException("Author cannot be null or empty.");
+        }
+        if (year <= 0) {
+            throw new IllegalArgumentException("Year must be a positive number.");
         }
         books.put(isbn, new Book(isbn, title, author, year, true));
     }
 
     public boolean isBookAvailable(String isbn) {
+        validateISBN(isbn);
         return books.containsKey(isbn) && books.get(isbn).isAvailable();
     }
 
     public void borrowBook(String isbn) {
+        validateISBN(isbn);
+
         if (!books.containsKey(isbn)) {
             throw new IllegalArgumentException("Book not found.");
         }
@@ -26,8 +46,10 @@ public class Library {
         if (!book.isAvailable()) {
             throw new IllegalStateException("Book is already borrowed.");
         }
-        book.setAvailable(false);
+        book.setAvailable(false); // Mark the book as borrowed
     }
+
+
     public void returnBook(String isbn) {
         if (!books.containsKey(isbn)) {
             throw new IllegalArgumentException("Book not found.");
@@ -36,10 +58,8 @@ public class Library {
         if (book.isAvailable()) {
             throw new IllegalStateException("Book is already returned.");
         }
-        book.setAvailable(true);
+        book.setAvailable(true); // Mark the book as returned
     }
-
-
 
     public List<Book> viewAvailableBooks() {
         return books.values().stream()
@@ -47,8 +67,14 @@ public class Library {
                 .collect(Collectors.toList());
     }
 
-
-
+    private void validateISBN(String isbn) {
+        if (isbn == null || isbn.isEmpty()) {
+            throw new IllegalArgumentException("ISBN cannot be null or empty.");
+        }
+    }
+    public static boolean isEven(int num){
+        return num%2 ==0;
+    }
 }
 
 class Book {
@@ -69,7 +95,9 @@ class Book {
     public boolean isAvailable() {
         return available;
     }
+
     public void setAvailable(boolean available) {
         this.available = available;
     }
+
 }
